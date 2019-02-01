@@ -1,0 +1,9 @@
+targets = [ "//:jwt-cpp" ]
+
+[[dependency]]
+package = "github.com/buckaroo-pm/host-dl"
+version = "*"
+
+[[dependency]]
+package = "github.com/buckaroo-pm/openssl"
+version = "*"

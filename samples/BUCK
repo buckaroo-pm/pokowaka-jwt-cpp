@@ -1,0 +1,9 @@
+cxx_binary(
+  name = 'sign',
+  srcs = [
+    'sign.cpp',
+  ],
+  deps = [
+    '//:jwt-cpp',
+  ],
+)

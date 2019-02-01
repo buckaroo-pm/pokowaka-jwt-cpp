@@ -1,0 +1,17 @@
+manifest = "b2ad311c397c6652e25ba09a7a20ffe20948b197f51e30832d662bc1d0727bf4"
+
+[[dependency]]
+package = "github.com/buckaroo-pm/host-dl"
+target = "//:dl"
+
+[[dependency]]
+package = "github.com/buckaroo-pm/openssl"
+target = "//:openssl"
+
+[lock."github.com/buckaroo-pm/host-dl"]
+versions = [ "branch=master" ]
+revision = "69a239353756c2ef5c97e5a56a0964fb7ac6eb49"
+
+[lock."github.com/buckaroo-pm/openssl"]
+versions = [ "tag=1.0.2j" ]
+revision = "e61671249ee5dfa59b663d135b64dd6fe9efe9d0"

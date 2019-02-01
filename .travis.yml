@@ -1,68 +1,33 @@
-#########################
-# project configuration #
-#########################
-
-# C++ project
 language: cpp
+sudo: true
 dist: trusty
-sudo: required
 
-################
-# build matrix #
-################
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-6
+      - gcc-6
 
-matrix:
-  include:
-  # OSX / Clang
-  - os: osx
-    osx_image: xcode6.4
+os:
+  - linux
+  - osx
 
-  - os: osx
-    osx_image: xcode8.3
+env:
+  - BUCKAROO_VERSION=v2.0.0
 
-  - os: osx
-    osx_image: xcode9
+cache:
+  directories:
+    - $HOME/.buckaroo/cache
+    - $TRAVIS_BUILD_DIR/bin
 
-  # Linux / GCC
-  - os: linux
-    compiler: gcc
-    env: MATRIX_EVAL="CXX=g++-7 && CXXFLAGS=-std=c++17"
-
-    addons:
-      apt:
-        sources: ['ubuntu-toolchain-r-test' ]
-        packages: ['g++-7' ]
-
-  # Linux / Clang
-  - os: linux
-    compiler: clang
-    env: MATRIX_EVAL="CXX=clang++-5.0 CXXFLAGS=-std=c++1z"
-    addons:
-      apt:
-        sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
-        packages: ['g++-6', 'clang-5.0' ]
-
-################
-# build script #
-################
-
+osx_image: xcode9.3
 
 before_install:
-    - eval "${MATRIX_EVAL}"
+  - ./travis/before-install-$TRAVIS_OS_NAME.sh
 
 script:
-  # get CMake and Ninja (only for systems with brew - macOS)
-  - |
-     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-       brew update
-       brew install openssl@1.1
-     fi
-
-  # show OS/compiler version
-  - uname -a
-  - $CXX --version
-
-  # compile and execute unit tests
-  - mkdir -p build && cd build
-  - cmake .. ${CMAKE_OPTIONS} && make
-  - ctest -C Release -V -j
+  - ./bin/buckaroo install
+  - ./bin/buck build -c ui.superconsole=DISABLED //:jwt-cpp
+  - ./bin/buck run -c ui.superconsole=DISABLED //samples:sign

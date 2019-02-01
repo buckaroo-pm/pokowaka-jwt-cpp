@@ -32,3 +32,10 @@ debug/
 
 # QtCreator user settings
 CMakeLists.txt.user
+
+.buckd
+buck-out
+.buckconfig.local
+.buckconfig.d
+buckaroo
+buckaroo_macros.bzl
